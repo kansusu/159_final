@@ -1,0 +1,565 @@
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/externals/joblib/externals/cloudpickle/cloudpickle.py:47: DeprecationWarning: the imp module is deprecated in favour of importlib; see the module's documentation for alternative uses
+  import imp
+2023-04-12 15:33:52 - root - INFO: - Dataset:Scene_15
+2023-04-12 15:33:52 - root - INFO: - Prediction={
+2023-04-12 15:33:52 - root - INFO: -           arch1 = [128, 256, 128]
+2023-04-12 15:33:52 - root - INFO: -           arch2 = [128, 256, 128]
+2023-04-12 15:33:52 - root - INFO: - Autoencoder={
+2023-04-12 15:33:52 - root - INFO: -           arch1 = [20, 1024, 1024, 1024, 128]
+2023-04-12 15:33:52 - root - INFO: -           arch2 = [59, 1024, 1024, 1024, 128]
+2023-04-12 15:33:52 - root - INFO: -           activations1 = relu
+2023-04-12 15:33:52 - root - INFO: -           activations2 = relu
+2023-04-12 15:33:52 - root - INFO: -           batchnorm = True
+2023-04-12 15:33:52 - root - INFO: - training={
+2023-04-12 15:33:52 - root - INFO: -           missing_rate = 0.5
+2023-04-12 15:33:52 - root - INFO: -           seed = 8
+2023-04-12 15:33:52 - root - INFO: -           start_dual_prediction = 100
+2023-04-12 15:33:52 - root - INFO: -           batch_size = 256
+2023-04-12 15:33:52 - root - INFO: -           epoch = 500
+2023-04-12 15:33:52 - root - INFO: -           lr = 0.0001
+2023-04-12 15:33:52 - root - INFO: -           alpha = 9
+2023-04-12 15:33:52 - root - INFO: -           lambda1 = 0.1
+2023-04-12 15:33:52 - root - INFO: -           lambda2 = 0.1
+2023-04-12 15:33:52 - root - INFO: - print_num = 100
+2023-04-12 15:33:52 - root - INFO: - dataset = Scene_15
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/preprocessing/_encoders.py:363: FutureWarning: The handling of integer data will change in version 0.22. Currently, the categories are determined based on the range [0, max(values)], while in the future they will be determined based on the unique values.
+If you want the future behaviour and silence this warning, you can specify "categories='auto'".
+In case you used a LabelEncoder before this OneHotEncoder to convert the categories to integers, then you can now use the OneHotEncoder directly.
+  warnings.warn(msg, FutureWarning)
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/preprocessing/_encoders.py:363: FutureWarning: The handling of integer data will change in version 0.22. Currently, the categories are determined based on the range [0, max(values)], while in the future they will be determined based on the unique values.
+If you want the future behaviour and silence this warning, you can specify "categories='auto'".
+In case you used a LabelEncoder before this OneHotEncoder to convert the categories to integers, then you can now use the OneHotEncoder directly.
+  warnings.warn(msg, FutureWarning)
+2023-04-12 15:34:07 - root - INFO: - Autoencoder(
+  (_encoder): Sequential(
+    (0): Linear(in_features=20, out_features=1024, bias=True)
+    (1): BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU()
+    (3): Linear(in_features=1024, out_features=1024, bias=True)
+    (4): BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): ReLU()
+    (6): Linear(in_features=1024, out_features=1024, bias=True)
+    (7): BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (8): ReLU()
+    (9): Linear(in_features=1024, out_features=128, bias=True)
+    (10): Softmax(dim=1)
+  )
+  (_decoder): Sequential(
+    (0): Linear(in_features=128, out_features=1024, bias=True)
+    (1): BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU()
+    (3): Linear(in_features=1024, out_features=1024, bias=True)
+    (4): BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): ReLU()
+    (6): Linear(in_features=1024, out_features=1024, bias=True)
+    (7): BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (8): ReLU()
+    (9): Linear(in_features=1024, out_features=20, bias=True)
+    (10): BatchNorm1d(20, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (11): ReLU()
+  )
+)
+2023-04-12 15:34:07 - root - INFO: - Prediction(
+  (_encoder): Sequential(
+    (0): Linear(in_features=128, out_features=128, bias=True)
+    (1): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU()
+    (3): Linear(in_features=128, out_features=256, bias=True)
+    (4): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): ReLU()
+    (6): Linear(in_features=256, out_features=128, bias=True)
+    (7): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (8): ReLU()
+  )
+  (_decoder): Sequential(
+    (0): Linear(in_features=128, out_features=256, bias=True)
+    (1): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU()
+    (3): Linear(in_features=256, out_features=128, bias=True)
+    (4): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): ReLU()
+    (6): Linear(in_features=128, out_features=128, bias=True)
+    (7): Softmax(dim=1)
+  )
+)
+2023-04-12 15:34:07 - root - INFO: - Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    lr: 0.0001
+    weight_decay: 0
+)
+2023-04-12 15:34:16 - root - INFO: - [2;29mEpoch : 100/500 ===> Reconstruction loss = 3.2193===> Reconstruction loss = 20.3232 ===> Dual prediction loss = 0.0287  ===> Contrastive loss = -8.0607e+02 ===> Loss = -8.0372e+02[0m
+/work/zhuyifan/2021-CVPR-Completer/model.py:98: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  x = torch.tensor(x).cuda()
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:732: FutureWarning: The behavior of AMI will change in version 0.22. To match the behavior of 'v_measure_score', AMI will use average_method='arithmetic' by default.
+  FutureWarning)
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:844: FutureWarning: The behavior of NMI will change in version 0.22. To match the behavior of 'v_measure_score', NMI will use average_method='arithmetic' by default.
+  FutureWarning)
+2023-04-12 15:34:18 - root - INFO: - [2;29mview_concat {'kmeans': {'AMI': 0.4013, 'NMI': 0.4105, 'ARI': 0.2254, 'accuracy': 0.3886, 'precision': 0.3792, 'recall': 0.3953, 'f_measure': 0.3672}}[0m
+2023-04-12 15:34:30 - root - INFO: - [2;29mEpoch : 200/500 ===> Reconstruction loss = 2.6952===> Reconstruction loss = 19.4176 ===> Dual prediction loss = 0.0053  ===> Contrastive loss = -8.0811e+02 ===> Loss = -8.0590e+02[0m
+/work/zhuyifan/2021-CVPR-Completer/model.py:98: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  x = torch.tensor(x).cuda()
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:732: FutureWarning: The behavior of AMI will change in version 0.22. To match the behavior of 'v_measure_score', AMI will use average_method='arithmetic' by default.
+  FutureWarning)
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:844: FutureWarning: The behavior of NMI will change in version 0.22. To match the behavior of 'v_measure_score', NMI will use average_method='arithmetic' by default.
+  FutureWarning)
+2023-04-12 15:34:31 - root - INFO: - [2;29mview_concat {'kmeans': {'AMI': 0.4075, 'NMI': 0.4157, 'ARI': 0.2307, 'accuracy': 0.3991, 'precision': 0.3928, 'recall': 0.4079, 'f_measure': 0.38}}[0m
+2023-04-12 15:34:42 - root - INFO: - [2;29mEpoch : 300/500 ===> Reconstruction loss = 2.2687===> Reconstruction loss = 18.6279 ===> Dual prediction loss = 0.0041  ===> Contrastive loss = -8.0967e+02 ===> Loss = -8.0758e+02[0m
+/work/zhuyifan/2021-CVPR-Completer/model.py:98: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  x = torch.tensor(x).cuda()
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:732: FutureWarning: The behavior of AMI will change in version 0.22. To match the behavior of 'v_measure_score', AMI will use average_method='arithmetic' by default.
+  FutureWarning)
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:844: FutureWarning: The behavior of NMI will change in version 0.22. To match the behavior of 'v_measure_score', NMI will use average_method='arithmetic' by default.
+  FutureWarning)
+2023-04-12 15:34:43 - root - INFO: - [2;29mview_concat {'kmeans': {'AMI': 0.4127, 'NMI': 0.4243, 'ARI': 0.2456, 'accuracy': 0.4147, 'precision': 0.4029, 'recall': 0.4184, 'f_measure': 0.3894}}[0m
+2023-04-12 15:34:54 - root - INFO: - [2;29mEpoch : 400/500 ===> Reconstruction loss = 1.8784===> Reconstruction loss = 17.9244 ===> Dual prediction loss = 0.0025  ===> Contrastive loss = -8.1102e+02 ===> Loss = -8.0904e+02[0m
+/work/zhuyifan/2021-CVPR-Completer/model.py:98: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  x = torch.tensor(x).cuda()
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:732: FutureWarning: The behavior of AMI will change in version 0.22. To match the behavior of 'v_measure_score', AMI will use average_method='arithmetic' by default.
+  FutureWarning)
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:844: FutureWarning: The behavior of NMI will change in version 0.22. To match the behavior of 'v_measure_score', NMI will use average_method='arithmetic' by default.
+  FutureWarning)
+2023-04-12 15:34:55 - root - INFO: - [2;29mview_concat {'kmeans': {'AMI': 0.4094, 'NMI': 0.4174, 'ARI': 0.2349, 'accuracy': 0.4049, 'precision': 0.3982, 'recall': 0.412, 'f_measure': 0.385}}[0m
+2023-04-12 15:35:06 - root - INFO: - [2;29mEpoch : 500/500 ===> Reconstruction loss = 1.5837===> Reconstruction loss = 17.2355 ===> Dual prediction loss = 0.0021  ===> Contrastive loss = -8.1088e+02 ===> Loss = -8.0900e+02[0m
+/work/zhuyifan/2021-CVPR-Completer/model.py:98: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  x = torch.tensor(x).cuda()
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:732: FutureWarning: The behavior of AMI will change in version 0.22. To match the behavior of 'v_measure_score', AMI will use average_method='arithmetic' by default.
+  FutureWarning)
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:844: FutureWarning: The behavior of NMI will change in version 0.22. To match the behavior of 'v_measure_score', NMI will use average_method='arithmetic' by default.
+  FutureWarning)
+2023-04-12 15:35:07 - root - INFO: - [2;29mview_concat {'kmeans': {'AMI': 0.3939, 'NMI': 0.4028, 'ARI': 0.2145, 'accuracy': 0.3929, 'precision': 0.398, 'recall': 0.3983, 'f_measure': 0.3815}}[0m
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/preprocessing/_encoders.py:363: FutureWarning: The handling of integer data will change in version 0.22. Currently, the categories are determined based on the range [0, max(values)], while in the future they will be determined based on the unique values.
+If you want the future behaviour and silence this warning, you can specify "categories='auto'".
+In case you used a LabelEncoder before this OneHotEncoder to convert the categories to integers, then you can now use the OneHotEncoder directly.
+  warnings.warn(msg, FutureWarning)
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/preprocessing/_encoders.py:363: FutureWarning: The handling of integer data will change in version 0.22. Currently, the categories are determined based on the range [0, max(values)], while in the future they will be determined based on the unique values.
+If you want the future behaviour and silence this warning, you can specify "categories='auto'".
+In case you used a LabelEncoder before this OneHotEncoder to convert the categories to integers, then you can now use the OneHotEncoder directly.
+  warnings.warn(msg, FutureWarning)
+2023-04-12 15:35:07 - root - INFO: - Autoencoder(
+  (_encoder): Sequential(
+    (0): Linear(in_features=20, out_features=1024, bias=True)
+    (1): BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU()
+    (3): Linear(in_features=1024, out_features=1024, bias=True)
+    (4): BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): ReLU()
+    (6): Linear(in_features=1024, out_features=1024, bias=True)
+    (7): BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (8): ReLU()
+    (9): Linear(in_features=1024, out_features=128, bias=True)
+    (10): Softmax(dim=1)
+  )
+  (_decoder): Sequential(
+    (0): Linear(in_features=128, out_features=1024, bias=True)
+    (1): BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU()
+    (3): Linear(in_features=1024, out_features=1024, bias=True)
+    (4): BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): ReLU()
+    (6): Linear(in_features=1024, out_features=1024, bias=True)
+    (7): BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (8): ReLU()
+    (9): Linear(in_features=1024, out_features=20, bias=True)
+    (10): BatchNorm1d(20, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (11): ReLU()
+  )
+)
+2023-04-12 15:35:07 - root - INFO: - Prediction(
+  (_encoder): Sequential(
+    (0): Linear(in_features=128, out_features=128, bias=True)
+    (1): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU()
+    (3): Linear(in_features=128, out_features=256, bias=True)
+    (4): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): ReLU()
+    (6): Linear(in_features=256, out_features=128, bias=True)
+    (7): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (8): ReLU()
+  )
+  (_decoder): Sequential(
+    (0): Linear(in_features=128, out_features=256, bias=True)
+    (1): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU()
+    (3): Linear(in_features=256, out_features=128, bias=True)
+    (4): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): ReLU()
+    (6): Linear(in_features=128, out_features=128, bias=True)
+    (7): Softmax(dim=1)
+  )
+)
+2023-04-12 15:35:07 - root - INFO: - Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    lr: 0.0001
+    weight_decay: 0
+)
+2023-04-12 15:35:15 - root - INFO: - [2;29mEpoch : 100/500 ===> Reconstruction loss = 3.2215===> Reconstruction loss = 20.3104 ===> Dual prediction loss = 0.0267  ===> Contrastive loss = -8.0582e+02 ===> Loss = -8.0347e+02[0m
+/work/zhuyifan/2021-CVPR-Completer/model.py:98: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  x = torch.tensor(x).cuda()
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:732: FutureWarning: The behavior of AMI will change in version 0.22. To match the behavior of 'v_measure_score', AMI will use average_method='arithmetic' by default.
+  FutureWarning)
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:844: FutureWarning: The behavior of NMI will change in version 0.22. To match the behavior of 'v_measure_score', NMI will use average_method='arithmetic' by default.
+  FutureWarning)
+2023-04-12 15:35:17 - root - INFO: - [2;29mview_concat {'kmeans': {'AMI': 0.4068, 'NMI': 0.4155, 'ARI': 0.2259, 'accuracy': 0.3855, 'precision': 0.3683, 'recall': 0.3926, 'f_measure': 0.3652}}[0m
+2023-04-12 15:35:28 - root - INFO: - [2;29mEpoch : 200/500 ===> Reconstruction loss = 2.6971===> Reconstruction loss = 19.4417 ===> Dual prediction loss = 0.0048  ===> Contrastive loss = -8.0805e+02 ===> Loss = -8.0583e+02[0m
+/work/zhuyifan/2021-CVPR-Completer/model.py:98: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  x = torch.tensor(x).cuda()
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:732: FutureWarning: The behavior of AMI will change in version 0.22. To match the behavior of 'v_measure_score', AMI will use average_method='arithmetic' by default.
+  FutureWarning)
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:844: FutureWarning: The behavior of NMI will change in version 0.22. To match the behavior of 'v_measure_score', NMI will use average_method='arithmetic' by default.
+  FutureWarning)
+2023-04-12 15:35:29 - root - INFO: - [2;29mview_concat {'kmeans': {'AMI': 0.4151, 'NMI': 0.4235, 'ARI': 0.2343, 'accuracy': 0.4002, 'precision': 0.3828, 'recall': 0.4069, 'f_measure': 0.3787}}[0m
+2023-04-12 15:35:40 - root - INFO: - [2;29mEpoch : 300/500 ===> Reconstruction loss = 2.2711===> Reconstruction loss = 18.6539 ===> Dual prediction loss = 0.0036  ===> Contrastive loss = -8.0932e+02 ===> Loss = -8.0723e+02[0m
+/work/zhuyifan/2021-CVPR-Completer/model.py:98: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  x = torch.tensor(x).cuda()
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:732: FutureWarning: The behavior of AMI will change in version 0.22. To match the behavior of 'v_measure_score', AMI will use average_method='arithmetic' by default.
+  FutureWarning)
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:844: FutureWarning: The behavior of NMI will change in version 0.22. To match the behavior of 'v_measure_score', NMI will use average_method='arithmetic' by default.
+  FutureWarning)
+2023-04-12 15:35:41 - root - INFO: - [2;29mview_concat {'kmeans': {'AMI': 0.4162, 'NMI': 0.4248, 'ARI': 0.2344, 'accuracy': 0.3991, 'precision': 0.3815, 'recall': 0.4047, 'f_measure': 0.3775}}[0m
+2023-04-12 15:35:52 - root - INFO: - [2;29mEpoch : 400/500 ===> Reconstruction loss = 1.8955===> Reconstruction loss = 17.8837 ===> Dual prediction loss = 0.0027  ===> Contrastive loss = -8.1125e+02 ===> Loss = -8.0928e+02[0m
+/work/zhuyifan/2021-CVPR-Completer/model.py:98: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  x = torch.tensor(x).cuda()
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:732: FutureWarning: The behavior of AMI will change in version 0.22. To match the behavior of 'v_measure_score', AMI will use average_method='arithmetic' by default.
+  FutureWarning)
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:844: FutureWarning: The behavior of NMI will change in version 0.22. To match the behavior of 'v_measure_score', NMI will use average_method='arithmetic' by default.
+  FutureWarning)
+2023-04-12 15:35:53 - root - INFO: - [2;29mview_concat {'kmeans': {'AMI': 0.4263, 'NMI': 0.4321, 'ARI': 0.2461, 'accuracy': 0.4091, 'precision': 0.3932, 'recall': 0.4185, 'f_measure': 0.3977}}[0m
+2023-04-12 15:36:04 - root - INFO: - [2;29mEpoch : 500/500 ===> Reconstruction loss = 1.6276===> Reconstruction loss = 17.2036 ===> Dual prediction loss = 0.0022  ===> Contrastive loss = -8.1077e+02 ===> Loss = -8.0889e+02[0m
+/work/zhuyifan/2021-CVPR-Completer/model.py:98: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  x = torch.tensor(x).cuda()
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:732: FutureWarning: The behavior of AMI will change in version 0.22. To match the behavior of 'v_measure_score', AMI will use average_method='arithmetic' by default.
+  FutureWarning)
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:844: FutureWarning: The behavior of NMI will change in version 0.22. To match the behavior of 'v_measure_score', NMI will use average_method='arithmetic' by default.
+  FutureWarning)
+2023-04-12 15:36:05 - root - INFO: - [2;29mview_concat {'kmeans': {'AMI': 0.426, 'NMI': 0.4329, 'ARI': 0.2486, 'accuracy': 0.4178, 'precision': 0.4048, 'recall': 0.4242, 'f_measure': 0.404}}[0m
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/preprocessing/_encoders.py:363: FutureWarning: The handling of integer data will change in version 0.22. Currently, the categories are determined based on the range [0, max(values)], while in the future they will be determined based on the unique values.
+If you want the future behaviour and silence this warning, you can specify "categories='auto'".
+In case you used a LabelEncoder before this OneHotEncoder to convert the categories to integers, then you can now use the OneHotEncoder directly.
+  warnings.warn(msg, FutureWarning)
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/preprocessing/_encoders.py:363: FutureWarning: The handling of integer data will change in version 0.22. Currently, the categories are determined based on the range [0, max(values)], while in the future they will be determined based on the unique values.
+If you want the future behaviour and silence this warning, you can specify "categories='auto'".
+In case you used a LabelEncoder before this OneHotEncoder to convert the categories to integers, then you can now use the OneHotEncoder directly.
+  warnings.warn(msg, FutureWarning)
+2023-04-12 15:36:05 - root - INFO: - Autoencoder(
+  (_encoder): Sequential(
+    (0): Linear(in_features=20, out_features=1024, bias=True)
+    (1): BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU()
+    (3): Linear(in_features=1024, out_features=1024, bias=True)
+    (4): BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): ReLU()
+    (6): Linear(in_features=1024, out_features=1024, bias=True)
+    (7): BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (8): ReLU()
+    (9): Linear(in_features=1024, out_features=128, bias=True)
+    (10): Softmax(dim=1)
+  )
+  (_decoder): Sequential(
+    (0): Linear(in_features=128, out_features=1024, bias=True)
+    (1): BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU()
+    (3): Linear(in_features=1024, out_features=1024, bias=True)
+    (4): BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): ReLU()
+    (6): Linear(in_features=1024, out_features=1024, bias=True)
+    (7): BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (8): ReLU()
+    (9): Linear(in_features=1024, out_features=20, bias=True)
+    (10): BatchNorm1d(20, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (11): ReLU()
+  )
+)
+2023-04-12 15:36:05 - root - INFO: - Prediction(
+  (_encoder): Sequential(
+    (0): Linear(in_features=128, out_features=128, bias=True)
+    (1): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU()
+    (3): Linear(in_features=128, out_features=256, bias=True)
+    (4): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): ReLU()
+    (6): Linear(in_features=256, out_features=128, bias=True)
+    (7): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (8): ReLU()
+  )
+  (_decoder): Sequential(
+    (0): Linear(in_features=128, out_features=256, bias=True)
+    (1): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU()
+    (3): Linear(in_features=256, out_features=128, bias=True)
+    (4): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): ReLU()
+    (6): Linear(in_features=128, out_features=128, bias=True)
+    (7): Softmax(dim=1)
+  )
+)
+2023-04-12 15:36:05 - root - INFO: - Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    lr: 0.0001
+    weight_decay: 0
+)
+2023-04-12 15:36:13 - root - INFO: - [2;29mEpoch : 100/500 ===> Reconstruction loss = 3.2572===> Reconstruction loss = 19.9950 ===> Dual prediction loss = 0.0279  ===> Contrastive loss = -8.0522e+02 ===> Loss = -8.0290e+02[0m
+/work/zhuyifan/2021-CVPR-Completer/model.py:98: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  x = torch.tensor(x).cuda()
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:732: FutureWarning: The behavior of AMI will change in version 0.22. To match the behavior of 'v_measure_score', AMI will use average_method='arithmetic' by default.
+  FutureWarning)
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:844: FutureWarning: The behavior of NMI will change in version 0.22. To match the behavior of 'v_measure_score', NMI will use average_method='arithmetic' by default.
+  FutureWarning)
+2023-04-12 15:36:14 - root - INFO: - [2;29mview_concat {'kmeans': {'AMI': 0.409, 'NMI': 0.4192, 'ARI': 0.2229, 'accuracy': 0.3813, 'precision': 0.3799, 'recall': 0.3846, 'f_measure': 0.3662}}[0m
+2023-04-12 15:36:26 - root - INFO: - [2;29mEpoch : 200/500 ===> Reconstruction loss = 2.7056===> Reconstruction loss = 19.1450 ===> Dual prediction loss = 0.0050  ===> Contrastive loss = -8.0801e+02 ===> Loss = -8.0582e+02[0m
+/work/zhuyifan/2021-CVPR-Completer/model.py:98: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  x = torch.tensor(x).cuda()
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:732: FutureWarning: The behavior of AMI will change in version 0.22. To match the behavior of 'v_measure_score', AMI will use average_method='arithmetic' by default.
+  FutureWarning)
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:844: FutureWarning: The behavior of NMI will change in version 0.22. To match the behavior of 'v_measure_score', NMI will use average_method='arithmetic' by default.
+  FutureWarning)
+2023-04-12 15:36:27 - root - INFO: - [2;29mview_concat {'kmeans': {'AMI': 0.4168, 'NMI': 0.4235, 'ARI': 0.2407, 'accuracy': 0.4025, 'precision': 0.3884, 'recall': 0.4012, 'f_measure': 0.3871}}[0m
+2023-04-12 15:36:38 - root - INFO: - [2;29mEpoch : 300/500 ===> Reconstruction loss = 2.2751===> Reconstruction loss = 18.3113 ===> Dual prediction loss = 0.0043  ===> Contrastive loss = -8.0955e+02 ===> Loss = -8.0749e+02[0m
+/work/zhuyifan/2021-CVPR-Completer/model.py:98: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  x = torch.tensor(x).cuda()
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:732: FutureWarning: The behavior of AMI will change in version 0.22. To match the behavior of 'v_measure_score', AMI will use average_method='arithmetic' by default.
+  FutureWarning)
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:844: FutureWarning: The behavior of NMI will change in version 0.22. To match the behavior of 'v_measure_score', NMI will use average_method='arithmetic' by default.
+  FutureWarning)
+2023-04-12 15:36:39 - root - INFO: - [2;29mview_concat {'kmeans': {'AMI': 0.4182, 'NMI': 0.4249, 'ARI': 0.2449, 'accuracy': 0.4116, 'precision': 0.3939, 'recall': 0.4082, 'f_measure': 0.3942}}[0m
+2023-04-12 15:36:50 - root - INFO: - [2;29mEpoch : 400/500 ===> Reconstruction loss = 1.8798===> Reconstruction loss = 17.5849 ===> Dual prediction loss = 0.0030  ===> Contrastive loss = -8.1031e+02 ===> Loss = -8.0837e+02[0m
+/work/zhuyifan/2021-CVPR-Completer/model.py:98: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  x = torch.tensor(x).cuda()
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:732: FutureWarning: The behavior of AMI will change in version 0.22. To match the behavior of 'v_measure_score', AMI will use average_method='arithmetic' by default.
+  FutureWarning)
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:844: FutureWarning: The behavior of NMI will change in version 0.22. To match the behavior of 'v_measure_score', NMI will use average_method='arithmetic' by default.
+  FutureWarning)
+2023-04-12 15:36:51 - root - INFO: - [2;29mview_concat {'kmeans': {'AMI': 0.424, 'NMI': 0.431, 'ARI': 0.2507, 'accuracy': 0.4156, 'precision': 0.4025, 'recall': 0.4122, 'f_measure': 0.3989}}[0m
+2023-04-12 15:37:02 - root - INFO: - [2;29mEpoch : 500/500 ===> Reconstruction loss = 1.5901===> Reconstruction loss = 16.8275 ===> Dual prediction loss = 0.0034  ===> Contrastive loss = -8.0985e+02 ===> Loss = -8.0801e+02[0m
+/work/zhuyifan/2021-CVPR-Completer/model.py:98: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  x = torch.tensor(x).cuda()
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:732: FutureWarning: The behavior of AMI will change in version 0.22. To match the behavior of 'v_measure_score', AMI will use average_method='arithmetic' by default.
+  FutureWarning)
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:844: FutureWarning: The behavior of NMI will change in version 0.22. To match the behavior of 'v_measure_score', NMI will use average_method='arithmetic' by default.
+  FutureWarning)
+2023-04-12 15:37:03 - root - INFO: - [2;29mview_concat {'kmeans': {'AMI': 0.4125, 'NMI': 0.4219, 'ARI': 0.2311, 'accuracy': 0.3924, 'precision': 0.3834, 'recall': 0.3899, 'f_measure': 0.3741}}[0m
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/preprocessing/_encoders.py:363: FutureWarning: The handling of integer data will change in version 0.22. Currently, the categories are determined based on the range [0, max(values)], while in the future they will be determined based on the unique values.
+If you want the future behaviour and silence this warning, you can specify "categories='auto'".
+In case you used a LabelEncoder before this OneHotEncoder to convert the categories to integers, then you can now use the OneHotEncoder directly.
+  warnings.warn(msg, FutureWarning)
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/preprocessing/_encoders.py:363: FutureWarning: The handling of integer data will change in version 0.22. Currently, the categories are determined based on the range [0, max(values)], while in the future they will be determined based on the unique values.
+If you want the future behaviour and silence this warning, you can specify "categories='auto'".
+In case you used a LabelEncoder before this OneHotEncoder to convert the categories to integers, then you can now use the OneHotEncoder directly.
+  warnings.warn(msg, FutureWarning)
+2023-04-12 15:37:03 - root - INFO: - Autoencoder(
+  (_encoder): Sequential(
+    (0): Linear(in_features=20, out_features=1024, bias=True)
+    (1): BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU()
+    (3): Linear(in_features=1024, out_features=1024, bias=True)
+    (4): BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): ReLU()
+    (6): Linear(in_features=1024, out_features=1024, bias=True)
+    (7): BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (8): ReLU()
+    (9): Linear(in_features=1024, out_features=128, bias=True)
+    (10): Softmax(dim=1)
+  )
+  (_decoder): Sequential(
+    (0): Linear(in_features=128, out_features=1024, bias=True)
+    (1): BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU()
+    (3): Linear(in_features=1024, out_features=1024, bias=True)
+    (4): BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): ReLU()
+    (6): Linear(in_features=1024, out_features=1024, bias=True)
+    (7): BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (8): ReLU()
+    (9): Linear(in_features=1024, out_features=20, bias=True)
+    (10): BatchNorm1d(20, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (11): ReLU()
+  )
+)
+2023-04-12 15:37:03 - root - INFO: - Prediction(
+  (_encoder): Sequential(
+    (0): Linear(in_features=128, out_features=128, bias=True)
+    (1): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU()
+    (3): Linear(in_features=128, out_features=256, bias=True)
+    (4): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): ReLU()
+    (6): Linear(in_features=256, out_features=128, bias=True)
+    (7): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (8): ReLU()
+  )
+  (_decoder): Sequential(
+    (0): Linear(in_features=128, out_features=256, bias=True)
+    (1): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU()
+    (3): Linear(in_features=256, out_features=128, bias=True)
+    (4): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): ReLU()
+    (6): Linear(in_features=128, out_features=128, bias=True)
+    (7): Softmax(dim=1)
+  )
+)
+2023-04-12 15:37:03 - root - INFO: - Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    lr: 0.0001
+    weight_decay: 0
+)
+2023-04-12 15:37:11 - root - INFO: - [2;29mEpoch : 100/500 ===> Reconstruction loss = 3.2180===> Reconstruction loss = 20.2980 ===> Dual prediction loss = 0.0277  ===> Contrastive loss = -8.0490e+02 ===> Loss = -8.0255e+02[0m
+/work/zhuyifan/2021-CVPR-Completer/model.py:98: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  x = torch.tensor(x).cuda()
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:732: FutureWarning: The behavior of AMI will change in version 0.22. To match the behavior of 'v_measure_score', AMI will use average_method='arithmetic' by default.
+  FutureWarning)
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:844: FutureWarning: The behavior of NMI will change in version 0.22. To match the behavior of 'v_measure_score', NMI will use average_method='arithmetic' by default.
+  FutureWarning)
+2023-04-12 15:37:12 - root - INFO: - [2;29mview_concat {'kmeans': {'AMI': 0.4004, 'NMI': 0.4107, 'ARI': 0.2175, 'accuracy': 0.3813, 'precision': 0.375, 'recall': 0.3802, 'f_measure': 0.3614}}[0m
+2023-04-12 15:37:24 - root - INFO: - [2;29mEpoch : 200/500 ===> Reconstruction loss = 2.6946===> Reconstruction loss = 19.4470 ===> Dual prediction loss = 0.0059  ===> Contrastive loss = -8.0791e+02 ===> Loss = -8.0570e+02[0m
+/work/zhuyifan/2021-CVPR-Completer/model.py:98: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  x = torch.tensor(x).cuda()
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:732: FutureWarning: The behavior of AMI will change in version 0.22. To match the behavior of 'v_measure_score', AMI will use average_method='arithmetic' by default.
+  FutureWarning)
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:844: FutureWarning: The behavior of NMI will change in version 0.22. To match the behavior of 'v_measure_score', NMI will use average_method='arithmetic' by default.
+  FutureWarning)
+2023-04-12 15:37:25 - root - INFO: - [2;29mview_concat {'kmeans': {'AMI': 0.4063, 'NMI': 0.4162, 'ARI': 0.2196, 'accuracy': 0.3808, 'precision': 0.3757, 'recall': 0.3793, 'f_measure': 0.3623}}[0m
+2023-04-12 15:37:36 - root - INFO: - [2;29mEpoch : 300/500 ===> Reconstruction loss = 2.2080===> Reconstruction loss = 18.5725 ===> Dual prediction loss = 0.0052  ===> Contrastive loss = -8.0863e+02 ===> Loss = -8.0655e+02[0m
+/work/zhuyifan/2021-CVPR-Completer/model.py:98: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  x = torch.tensor(x).cuda()
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:732: FutureWarning: The behavior of AMI will change in version 0.22. To match the behavior of 'v_measure_score', AMI will use average_method='arithmetic' by default.
+  FutureWarning)
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:844: FutureWarning: The behavior of NMI will change in version 0.22. To match the behavior of 'v_measure_score', NMI will use average_method='arithmetic' by default.
+  FutureWarning)
+2023-04-12 15:37:37 - root - INFO: - [2;29mview_concat {'kmeans': {'AMI': 0.3967, 'NMI': 0.406, 'ARI': 0.2161, 'accuracy': 0.3837, 'precision': 0.3804, 'recall': 0.3797, 'f_measure': 0.367}}[0m
+2023-04-12 15:37:48 - root - INFO: - [2;29mEpoch : 400/500 ===> Reconstruction loss = 1.8254===> Reconstruction loss = 17.9013 ===> Dual prediction loss = 0.0041  ===> Contrastive loss = -8.0946e+02 ===> Loss = -8.0748e+02[0m
+/work/zhuyifan/2021-CVPR-Completer/model.py:98: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  x = torch.tensor(x).cuda()
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:732: FutureWarning: The behavior of AMI will change in version 0.22. To match the behavior of 'v_measure_score', AMI will use average_method='arithmetic' by default.
+  FutureWarning)
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:844: FutureWarning: The behavior of NMI will change in version 0.22. To match the behavior of 'v_measure_score', NMI will use average_method='arithmetic' by default.
+  FutureWarning)
+2023-04-12 15:37:49 - root - INFO: - [2;29mview_concat {'kmeans': {'AMI': 0.3945, 'NMI': 0.4037, 'ARI': 0.2138, 'accuracy': 0.3833, 'precision': 0.3869, 'recall': 0.38, 'f_measure': 0.372}}[0m
+2023-04-12 15:38:00 - root - INFO: - [2;29mEpoch : 500/500 ===> Reconstruction loss = 1.5056===> Reconstruction loss = 17.1826 ===> Dual prediction loss = 0.0033  ===> Contrastive loss = -8.0986e+02 ===> Loss = -8.0799e+02[0m
+/work/zhuyifan/2021-CVPR-Completer/model.py:98: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  x = torch.tensor(x).cuda()
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:732: FutureWarning: The behavior of AMI will change in version 0.22. To match the behavior of 'v_measure_score', AMI will use average_method='arithmetic' by default.
+  FutureWarning)
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:844: FutureWarning: The behavior of NMI will change in version 0.22. To match the behavior of 'v_measure_score', NMI will use average_method='arithmetic' by default.
+  FutureWarning)
+2023-04-12 15:38:01 - root - INFO: - [2;29mview_concat {'kmeans': {'AMI': 0.3861, 'NMI': 0.3971, 'ARI': 0.2057, 'accuracy': 0.3753, 'precision': 0.3661, 'recall': 0.3717, 'f_measure': 0.3575}}[0m
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/preprocessing/_encoders.py:363: FutureWarning: The handling of integer data will change in version 0.22. Currently, the categories are determined based on the range [0, max(values)], while in the future they will be determined based on the unique values.
+If you want the future behaviour and silence this warning, you can specify "categories='auto'".
+In case you used a LabelEncoder before this OneHotEncoder to convert the categories to integers, then you can now use the OneHotEncoder directly.
+  warnings.warn(msg, FutureWarning)
+2023-04-12 15:38:01 - root - INFO: - Autoencoder(
+  (_encoder): Sequential(
+    (0): Linear(in_features=20, out_features=1024, bias=True)
+    (1): BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU()
+    (3): Linear(in_features=1024, out_features=1024, bias=True)
+    (4): BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): ReLU()
+    (6): Linear(in_features=1024, out_features=1024, bias=True)
+    (7): BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (8): ReLU()
+    (9): Linear(in_features=1024, out_features=128, bias=True)
+    (10): Softmax(dim=1)
+  )
+  (_decoder): Sequential(
+    (0): Linear(in_features=128, out_features=1024, bias=True)
+    (1): BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU()
+    (3): Linear(in_features=1024, out_features=1024, bias=True)
+    (4): BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): ReLU()
+    (6): Linear(in_features=1024, out_features=1024, bias=True)
+    (7): BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (8): ReLU()
+    (9): Linear(in_features=1024, out_features=20, bias=True)
+    (10): BatchNorm1d(20, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (11): ReLU()
+  )
+)
+2023-04-12 15:38:01 - root - INFO: - Prediction(
+  (_encoder): Sequential(
+    (0): Linear(in_features=128, out_features=128, bias=True)
+    (1): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU()
+    (3): Linear(in_features=128, out_features=256, bias=True)
+    (4): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): ReLU()
+    (6): Linear(in_features=256, out_features=128, bias=True)
+    (7): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (8): ReLU()
+  )
+  (_decoder): Sequential(
+    (0): Linear(in_features=128, out_features=256, bias=True)
+    (1): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU()
+    (3): Linear(in_features=256, out_features=128, bias=True)
+    (4): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): ReLU()
+    (6): Linear(in_features=128, out_features=128, bias=True)
+    (7): Softmax(dim=1)
+  )
+)
+2023-04-12 15:38:01 - root - INFO: - Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    lr: 0.0001
+    weight_decay: 0
+)
+2023-04-12 15:38:09 - root - INFO: - [2;29mEpoch : 100/500 ===> Reconstruction loss = 3.2389===> Reconstruction loss = 20.2514 ===> Dual prediction loss = 0.0270  ===> Contrastive loss = -8.0570e+02 ===> Loss = -8.0335e+02[0m
+/work/zhuyifan/2021-CVPR-Completer/model.py:98: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  x = torch.tensor(x).cuda()
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:732: FutureWarning: The behavior of AMI will change in version 0.22. To match the behavior of 'v_measure_score', AMI will use average_method='arithmetic' by default.
+  FutureWarning)
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:844: FutureWarning: The behavior of NMI will change in version 0.22. To match the behavior of 'v_measure_score', NMI will use average_method='arithmetic' by default.
+  FutureWarning)
+2023-04-12 15:38:10 - root - INFO: - [2;29mview_concat {'kmeans': {'AMI': 0.3985, 'NMI': 0.4069, 'ARI': 0.2209, 'accuracy': 0.3935, 'precision': 0.3892, 'recall': 0.4006, 'f_measure': 0.3774}}[0m
+2023-04-12 15:38:22 - root - INFO: - [2;29mEpoch : 200/500 ===> Reconstruction loss = 2.7214===> Reconstruction loss = 19.3674 ===> Dual prediction loss = 0.0056  ===> Contrastive loss = -8.0763e+02 ===> Loss = -8.0542e+02[0m
+/work/zhuyifan/2021-CVPR-Completer/model.py:98: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  x = torch.tensor(x).cuda()
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:732: FutureWarning: The behavior of AMI will change in version 0.22. To match the behavior of 'v_measure_score', AMI will use average_method='arithmetic' by default.
+  FutureWarning)
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:844: FutureWarning: The behavior of NMI will change in version 0.22. To match the behavior of 'v_measure_score', NMI will use average_method='arithmetic' by default.
+  FutureWarning)
+2023-04-12 15:38:23 - root - INFO: - [2;29mview_concat {'kmeans': {'AMI': 0.4191, 'NMI': 0.4256, 'ARI': 0.2472, 'accuracy': 0.4169, 'precision': 0.3976, 'recall': 0.427, 'f_measure': 0.4003}}[0m
+2023-04-12 15:38:34 - root - INFO: - [2;29mEpoch : 300/500 ===> Reconstruction loss = 2.2613===> Reconstruction loss = 18.5509 ===> Dual prediction loss = 0.0036  ===> Contrastive loss = -8.0951e+02 ===> Loss = -8.0743e+02[0m
+/work/zhuyifan/2021-CVPR-Completer/model.py:98: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  x = torch.tensor(x).cuda()
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:732: FutureWarning: The behavior of AMI will change in version 0.22. To match the behavior of 'v_measure_score', AMI will use average_method='arithmetic' by default.
+  FutureWarning)
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:844: FutureWarning: The behavior of NMI will change in version 0.22. To match the behavior of 'v_measure_score', NMI will use average_method='arithmetic' by default.
+  FutureWarning)
+2023-04-12 15:38:35 - root - INFO: - [2;29mview_concat {'kmeans': {'AMI': 0.4199, 'NMI': 0.4261, 'ARI': 0.2465, 'accuracy': 0.4178, 'precision': 0.4044, 'recall': 0.4232, 'f_measure': 0.402}}[0m
+2023-04-12 15:38:46 - root - INFO: - [2;29mEpoch : 400/500 ===> Reconstruction loss = 1.9044===> Reconstruction loss = 17.8009 ===> Dual prediction loss = 0.0031  ===> Contrastive loss = -8.0995e+02 ===> Loss = -8.0798e+02[0m
+/work/zhuyifan/2021-CVPR-Completer/model.py:98: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  x = torch.tensor(x).cuda()
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:732: FutureWarning: The behavior of AMI will change in version 0.22. To match the behavior of 'v_measure_score', AMI will use average_method='arithmetic' by default.
+  FutureWarning)
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:844: FutureWarning: The behavior of NMI will change in version 0.22. To match the behavior of 'v_measure_score', NMI will use average_method='arithmetic' by default.
+  FutureWarning)
+2023-04-12 15:38:47 - root - INFO: - [2;29mview_concat {'kmeans': {'AMI': 0.4173, 'NMI': 0.4265, 'ARI': 0.2409, 'accuracy': 0.4147, 'precision': 0.4025, 'recall': 0.4212, 'f_measure': 0.3952}}[0m
+2023-04-12 15:38:58 - root - INFO: - [2;29mEpoch : 500/500 ===> Reconstruction loss = 1.5852===> Reconstruction loss = 17.0711 ===> Dual prediction loss = 0.0026  ===> Contrastive loss = -8.1109e+02 ===> Loss = -8.0922e+02[0m
+/work/zhuyifan/2021-CVPR-Completer/model.py:98: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  x = torch.tensor(x).cuda()
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:732: FutureWarning: The behavior of AMI will change in version 0.22. To match the behavior of 'v_measure_score', AMI will use average_method='arithmetic' by default.
+  FutureWarning)
+/share/software/languages/ANACONDA/5.3_py3/lib/python3.6/site-packages/sklearn/metrics/cluster/supervised.py:844: FutureWarning: The behavior of NMI will change in version 0.22. To match the behavior of 'v_measure_score', NMI will use average_method='arithmetic' by default.
+  FutureWarning)
+2023-04-12 15:38:59 - root - INFO: - [2;29mview_concat {'kmeans': {'AMI': 0.4169, 'NMI': 0.4252, 'ARI': 0.243, 'accuracy': 0.4165, 'precision': 0.3948, 'recall': 0.4228, 'f_measure': 0.3924}}[0m
+2023-04-12 15:38:59 - root - INFO: - --------------------Training over--------------------
+2023-04-12 15:38:59 - root - INFO: - ACC:[0.3929, 0.4178, 0.3924, 0.3753, 0.4165]
+2023-04-12 15:38:59 - root - INFO: - NMI:[0.4028, 0.4329, 0.4219, 0.3971, 0.4252]
+2023-04-12 15:38:59 - root - INFO: - ARI:[0.2145, 0.2486, 0.2311, 0.2057, 0.243]
+2023-04-12 15:38:59 - root - INFO: -  ACC 39.90 std 1.61 NMI 41.60 std 1.37 ARI 22.86 std 1.64
