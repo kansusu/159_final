@@ -25,6 +25,8 @@ from util import cal_std, get_logger
 from datasets import *
 from configure import get_default_config
 
+torch.cuda.empty_cache()
+
 dataset = {
     0: "Caltech101-20",
     1: "Scene_15",
@@ -37,6 +39,8 @@ parser.add_argument('--dataset', type=int, default='0', help='dataset id')
 parser.add_argument('--devices', type=str, default='0', help='gpu device ids')
 parser.add_argument('--print_num', type=int, default='100', help='gap of print evaluations')
 parser.add_argument('--test_time', type=int, default='5', help='number of test times')
+parser.add_argument('-r', '--robust', default=1, type=int, help='use our robust loss or not')
+parser.add_argument('-m', '--margin', default='5', type=int, help='initial margin')
 
 args = parser.parse_args()
 dataset = dataset[args.dataset]
@@ -109,7 +113,7 @@ def main():
 
         # Training
         acc, nmi, ari = COMPLETER.train(config, logger, x1_train, x2_train, Y_list,
-                                        mask, optimizer, device)
+                                        mask, optimizer, device,args)
         accumulated_metrics['acc'].append(acc)
         accumulated_metrics['nmi'].append(nmi)
         accumulated_metrics['ari'].append(ari)

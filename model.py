@@ -22,7 +22,7 @@ from sklearn.utils import shuffle
 from loss import crossview_contrastive_Loss
 import evaluation
 from util import next_batch
-
+import torch.nn as nn
 
 class Autoencoder(nn.Module):
     """AutoEncoder module that projects features to latent space."""
@@ -95,7 +95,7 @@ class Autoencoder(nn.Module):
             Returns:
               latent: [n_nodes, latent_dim] float tensor, representation Z.
         """
-        x = torch.tensor(x).cuda()
+        x = torch.tensor(x)
         latent = self._encoder(x)
         return latent
 
@@ -203,6 +203,29 @@ class Prediction(nn.Module):
         return output, latent
 
 
+
+# NoiseRobustLoss
+class NoiseRobustLoss(nn.Module):
+    def __init__(self):
+        super(NoiseRobustLoss, self).__init__()
+
+    def forward(self, pair_dist, P, margin, use_robust_loss, args):
+        dist_sq = pair_dist * pair_dist
+        P = P.to(torch.float32)
+        N = len(P)
+        if use_robust_loss == 1:
+            if args.start_fine:
+                loss = P * dist_sq + (1 - P) * (1 / margin) * torch.pow(
+                    torch.clamp(torch.pow(pair_dist, 0.5) * (margin - pair_dist), min=0.0), 2)
+            else:
+                loss = P * dist_sq + (1 - P) * torch.pow(torch.clamp(margin - pair_dist, min=0.0), 2)
+        else:
+            loss = P * dist_sq + (1 - P) * torch.pow(torch.clamp(margin - pair_dist, min=0.0), 2)
+        loss = torch.sum(loss) / (2.0 * N)
+        return loss
+    
+      
+      
 class Completer():
     """COMPLETER module."""
 
@@ -240,7 +263,7 @@ class Completer():
         self.img2txt.to(device)
         self.txt2img.to(device)
 
-    def train(self, config, logger, x1_train, x2_train, Y_list, mask, optimizer, device):
+    def train(self, config, logger, x1_train, x2_train, Y_list, mask, optimizer, device,args):
         """Training the model.
 
             Args:
@@ -261,8 +284,8 @@ class Completer():
         # Get complete data for training
         flag = (torch.LongTensor([1, 1]).to(device) == mask).int()
         flag = (flag[:, 1] + flag[:, 0]) == 2
-        train_view1 = x1_train[flag].cpu().numpy() 
-        train_view2 = x2_train[flag].cpu().numpy() 
+        train_view1 = x1_train[flag].numpy() 
+        train_view2 = x2_train[flag].numpy() 
         # print('train_view2 type',type(train_view2))
         # train_view2 = torch.tensor(train_view2)
         # print('train_view2 type after transformation: ',type(train_view2))
@@ -275,12 +298,18 @@ class Completer():
                 z_1 = self.autoencoder1.encoder(batch_x1)
                 z_2 = self.autoencoder2.encoder(batch_x2)
                 
-                batch_x1 = torch.from_numpy(batch_x1).cuda()
-                batch_x2 = torch.from_numpy(batch_x2).cuda()
+                batch_x1 = torch.from_numpy(batch_x1)
+                batch_x2 = torch.from_numpy(batch_x2)
                 # Within-view Reconstruction Loss
                 recon1 = F.mse_loss(self.autoencoder1.decoder(z_1), batch_x1)
                 recon2 = F.mse_loss(self.autoencoder2.decoder(z_2), batch_x2)
                 reconstruction_loss = recon1 + recon2
+                
+                # NoiseRobustLoss
+                pair_dist = F.pairwise_distance(recon1, recon2) 
+                criterion = NoiseRobustLoss().to(device)
+                noiserobust_loss = criterion(pair_dist, z_1, args.margin, args.robust, args)
+                
 
                 # Cross-view Contrastive_Loss
                 cl_loss = crossview_contrastive_Loss(z_1, z_2, config['training']['alpha'])
@@ -292,7 +321,7 @@ class Completer():
                 pre2 = F.mse_loss(txt2img, z_1)
                 dualprediction_loss = (pre1 + pre2)
 
-                loss = cl_loss + reconstruction_loss * config['training']['lambda2']
+                loss = noiserobust_loss + cl_loss + reconstruction_loss * config['training']['lambda2']
 
                 # we train the autoencoder by L_cl and L_rec first to stabilize
                 # the training of the dual prediction
@@ -363,4 +392,3 @@ class Completer():
             self.img2txt.train(), self.txt2img.train()
 
         return scores
-
