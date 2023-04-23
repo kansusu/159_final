@@ -41,6 +41,7 @@ parser.add_argument('--print_num', type=int, default='100', help='gap of print e
 parser.add_argument('--test_time', type=int, default='5', help='number of test times')
 parser.add_argument('-r', '--robust', default=1, type=int, help='use our robust loss or not')
 parser.add_argument('-m', '--margin', default='5', type=int, help='initial margin')
+parser.add_argument('-s', '--start-fine', default=True, type=bool, help='flag to start use robust loss or not')
 
 args = parser.parse_args()
 dataset = dataset[args.dataset]
