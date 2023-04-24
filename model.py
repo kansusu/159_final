@@ -306,7 +306,7 @@ class Completer():
                 reconstruction_loss = recon1 + recon2
                 
                 # NoiseRobustLoss
-                pair_dist = F.pairwise_distance(recon1, recon2) 
+                pair_dist = F.pairwise_distance(self.autoencoder1.decoder(z_1), self.autoencoder2.decoder(z_2)) 
                 criterion = NoiseRobustLoss().to(device)
                 noiserobust_loss = criterion(pair_dist, z_1, args.margin, args.robust, args)
                 
