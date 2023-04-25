@@ -203,34 +203,14 @@ class Prediction(nn.Module):
         return output, latent
 
 # add noise
-def add_noise(inputs,noise_factor=0.3):
-     inputs = torch.Tensor(inputs)
-     noisy = inputs+torch.randn_like(inputs) * noise_factor
-     noisy = torch.clamp(noisy,0.,1.)
-     return noisy
+# def add_noise(inputs,noise_factor=0.3):
+#      inputs = torch.Tensor(inputs)
+#      noisy = inputs+torch.randn_like(inputs) * noise_factor
+#      noisy = torch.clamp(noisy,0.,1.)
+#      return noisy
 
 
-# # NoiseRobustLoss
-# class NoiseRobustLoss(nn.Module):
-#     def __init__(self):
-#         super(NoiseRobustLoss, self).__init__()
-
-#     def forward(self, pair_dist, P, margin, use_robust_loss, args):
-#         dist_sq = pair_dist * pair_dist
-#         P = P.to(torch.float32)
-#         N = len(P)
-#         if use_robust_loss == 1:
-#             if args.start_fine:
-#                 loss = P * dist_sq + (1 - P) * (1 / margin) * torch.pow(
-#                     torch.clamp(torch.pow(pair_dist, 0.5) * (margin - pair_dist), min=0.0), 2)
-#             else:
-#                 loss = P * dist_sq + (1 - P) * torch.pow(torch.clamp(margin - pair_dist, min=0.0), 2)
-#         else:
-#             loss = P * dist_sq + (1 - P) * torch.pow(torch.clamp(margin - pair_dist, min=0.0), 2)
-#         loss = torch.sum(loss) / (2.0 * N)
-#         return loss
     
-      
       
 class Completer():
     """COMPLETER module."""
@@ -269,7 +249,7 @@ class Completer():
         self.img2txt.to(device)
         self.txt2img.to(device)
 
-    def train(self, config, logger, x1_train, x2_train, Y_list, mask, optimizer, device,noise_factor=0.3):
+    def train(self, config, logger, x1_train, x2_train, Y_list, mask, optimizer, device, mask_prob=0.5):
         """Training the model.
 
             Args:
@@ -302,36 +282,47 @@ class Completer():
             loss_all, loss_rec1, loss_rec2, loss_cl, loss_pre = 0, 0, 0, 0, 0
             for batch_x1, batch_x2, batch_No in next_batch(X1, X2, config['training']['batch_size']):
                 # add noise to batch_x1 
-                image_noisy1 = add_noise(batch_x1,noise_factor)
-                image_noisy2 = add_noise(batch_x2,noise_factor)
+                # image_noisy1 = add_noise(batch_x1,noise_factor)
+                # image_noisy2 = add_noise(batch_x2,noise_factor)
                 
-                # original data 
+                # original data prob
                 # z_1 = self.autoencoder1.encoder(batch_x1)
                 # z_2 = self.autoencoder2.encoder(batch_x2
                 
-                image_noisy1 = image_noisy1.to(device)
-                image_noisy2 = image_noisy2.to(device)
+                # image_noisy1 = image_noisy1.to(device)
+                # image_noisy2 = image_noisy2.to(device)
                 
-                # add noise encoder 
-                z_1 = self.autoencoder1.encoder(image_noisy1)
-                z_2 = self.autoencoder2.encoder(image_noisy2)
+                # # add noise encoder 
+                # z_1 = self.autoencoder1.encoder(image_noisy1)
+                # z_2 = self.autoencoder2.encoder(image_noisy2)
+                
                 
                 batch_x1 = torch.from_numpy(batch_x1)
                 batch_x2 = torch.from_numpy(batch_x2)
                 
+                # Create mask
+                mask_x1 = torch.bernoulli(torch.full(batch_x1.shape, mask_prob)) 
+                mask_x2 =  torch.bernoulli(torch.full(batch_x2.shape, mask_prob)) 
+                # mask data
+                data_masked1 = batch_x1 * mask_x1
+                data_masked2 = batch_x2 * mask_x2
+                
+                # to-device
+                data_masked1 = data_masked1.to(device)
+                data_masked2 = data_masked2.to(device)
+                
                 batch_x1 = batch_x1.to(device)
                 batch_x2 = batch_x2.to(device)
+                
+                # masked encoder
+              
+                z_1 = self.autoencoder1.encoder(data_masked1)
+                z_2 = self.autoencoder2.encoder(data_masked2)
                 
                 # Within-view Reconstruction Loss
                 recon1 = F.mse_loss(self.autoencoder1.decoder(z_1), batch_x1)
                 recon2 = F.mse_loss(self.autoencoder2.decoder(z_2), batch_x2)
                 reconstruction_loss = recon1 + recon2
-                
-                # # NoiseRobustLoss
-                # pair_dist = F.pairwise_distance(self.autoencoder1.decoder(z_1), self.autoencoder2.decoder(z_2)) 
-                # criterion = NoiseRobustLoss().to(device)
-                # noiserobust_loss = criterion(pair_dist, z_1, args.margin, args.robust, args)
-                
 
                 # Cross-view Contrastive_Loss
                 cl_loss = crossview_contrastive_Loss(z_1, z_2, config['training']['alpha'])
