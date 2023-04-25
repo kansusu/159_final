@@ -114,7 +114,7 @@ def main():
 
         # Training
         acc, nmi, ari = COMPLETER.train(config, logger, x1_train, x2_train, Y_list,
-                                        mask, optimizer, device,args)
+                                        mask, optimizer, device,noise_factor=0.3)
         accumulated_metrics['acc'].append(acc)
         accumulated_metrics['nmi'].append(nmi)
         accumulated_metrics['ari'].append(ari)
