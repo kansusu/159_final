@@ -85,6 +85,9 @@ class Autoencoder(nn.Module):
             else:
                 raise ValueError('Unknown activation type %s' % self._activation)
         self._decoder = nn.Sequential(*decoder_layers)
+        # mask
+        self.mask = nn.Parameter(torch.randn(encoder_dim[0]))
+        
 
     def encoder(self, x):
         """Encode sample features.
@@ -113,10 +116,8 @@ class Autoencoder(nn.Module):
 
     def forward(self, x):
         """Pass through autoencoder.
-
             Args:
               x: [num, feat_dim] float tensor.
-
             Returns:
               latent: [num, latent_dim] float tensor, representation Z.
               x_hat:  [num, feat_dim] float tensor, reconstruction x.
@@ -124,6 +125,18 @@ class Autoencoder(nn.Module):
         latent = self.encoder(x)
         x_hat = self.decoder(latent)
         return x_hat, latent
+    
+    # mask forward
+    # def forward(self, x, is_masked=True):
+    #     if is_masked:
+    #         masked_input = x * self.mask
+    #         encoded = self.encoder(masked_input)
+    #         decoded = self.decoder(encoded)
+    #         return decoded
+    #     else:
+    #         encoded = self.encoder(x)
+    #         decoded = self.decoder(encoded)
+    #         return decoded
 
 
 class Prediction(nn.Module):
@@ -187,6 +200,8 @@ class Prediction(nn.Module):
                     raise ValueError('Unknown activation type %s' % self._activation)
         decoder_layers.append(nn.Softmax(dim=1))
         self._decoder = nn.Sequential(*decoder_layers)
+        
+        
 
     def forward(self, x):
         """Data recovery by prediction.
@@ -201,7 +216,7 @@ class Prediction(nn.Module):
         latent = self._encoder(x)
         output = self._decoder(latent)
         return output, latent
-
+    
 # add noise
 # def add_noise(inputs,noise_factor=0.3):
 #      inputs = torch.Tensor(inputs)
@@ -249,7 +264,7 @@ class Completer():
         self.img2txt.to(device)
         self.txt2img.to(device)
 
-    def train(self, config, logger, x1_train, x2_train, Y_list, mask, optimizer, device, mask_prob=0.5):
+    def train(self, config, logger, x1_train, x2_train, Y_list, mask, optimizer, device):
         """Training the model.
 
             Args:
@@ -296,28 +311,27 @@ class Completer():
                 # z_1 = self.autoencoder1.encoder(image_noisy1)
                 # z_2 = self.autoencoder2.encoder(image_noisy2)
                 
-                
                 batch_x1 = torch.from_numpy(batch_x1)
                 batch_x2 = torch.from_numpy(batch_x2)
-                
-                # Create mask
-                mask_x1 = torch.bernoulli(torch.full(batch_x1.shape, mask_prob)) 
-                mask_x2 =  torch.bernoulli(torch.full(batch_x2.shape, mask_prob)) 
-                # mask data
-                data_masked1 = batch_x1 * mask_x1
-                data_masked2 = batch_x2 * mask_x2
-                
-                # to-device
-                data_masked1 = data_masked1.to(device)
-                data_masked2 = data_masked2.to(device)
                 
                 batch_x1 = batch_x1.to(device)
                 batch_x2 = batch_x2.to(device)
                 
+                # # Create mask
+                # mask_x1 = torch.bernoulli(torch.full(batch_x1.shape, mask_prob)) 
+                # mask_x2 =  torch.bernoulli(torch.full(batch_x2.shape, mask_prob)) 
+                # # mask data
+                # data_masked1 = batch_x1 * mask_x1
+                # data_masked2 = batch_x2 * mask_x2
+                
+                # # to-device
+                # data_masked1 = data_masked1.to(device)
+                # data_masked2 = data_masked2.to(device)
+                
+            
                 # masked encoder
-              
-                z_1 = self.autoencoder1.encoder(data_masked1)
-                z_2 = self.autoencoder2.encoder(data_masked2)
+                z_1 = self.autoencoder1.encoder(batch_x1)
+                z_2 = self.autoencoder2.encoder(batch_x2 )
                 
                 # Within-view Reconstruction Loss
                 recon1 = F.mse_loss(self.autoencoder1.decoder(z_1), batch_x1)
