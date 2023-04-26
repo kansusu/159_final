@@ -114,29 +114,29 @@ class Autoencoder(nn.Module):
         x_hat = self._decoder(latent)
         return x_hat
 
-    def forward(self, x):
-        """Pass through autoencoder.
-            Args:
-              x: [num, feat_dim] float tensor.
-            Returns:
-              latent: [num, latent_dim] float tensor, representation Z.
-              x_hat:  [num, feat_dim] float tensor, reconstruction x.
-        """
-        latent = self.encoder(x)
-        x_hat = self.decoder(latent)
-        return x_hat, latent
+    # def forward(self, x):
+    #     """Pass through autoencoder.
+    #         Args:
+    #           x: [num, feat_dim] float tensor.
+    #         Returns:
+    #           latent: [num, latent_dim] float tensor, representation Z.
+    #           x_hat:  [num, feat_dim] float tensor, reconstruction x.
+    #     """
+    #     latent = self.encoder(x)
+    #     x_hat = self.decoder(latent)
+    #     return x_hat, latent
     
     # mask forward
-    # def forward(self, x, is_masked=True):
-    #     if is_masked:
-    #         masked_input = x * self.mask
-    #         encoded = self.encoder(masked_input)
-    #         decoded = self.decoder(encoded)
-    #         return decoded
-    #     else:
-    #         encoded = self.encoder(x)
-    #         decoded = self.decoder(encoded)
-    #         return decoded
+    def forward(self, x, is_masked=True):
+        if is_masked:
+            masked_input = x * self.mask
+            encoded = self.encoder(masked_input)
+            decoded = self.decoder(encoded)
+            return decoded
+        else:
+            encoded = self.encoder(x)
+            decoded = self.decoder(encoded)
+            return decoded
 
 
 class Prediction(nn.Module):
