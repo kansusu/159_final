@@ -85,58 +85,76 @@ class Autoencoder(nn.Module):
             else:
                 raise ValueError('Unknown activation type %s' % self._activation)
         self._decoder = nn.Sequential(*decoder_layers)
-        # mask
-        self.mask = nn.Parameter(torch.randn(encoder_dim[0]))
+        
         
 
-    def encoder(self, x):
-        """Encode sample features.
+    # def encoder(self, x):
+    #     """Encode sample features.
 
-            Args:
-              x: [num, feat_dim] float tensor.
-
-            Returns:
-              latent: [n_nodes, latent_dim] float tensor, representation Z.
-        """
-        x = torch.tensor(x)
-        latent = self._encoder(x)
-        return latent
-
-    def decoder(self, latent):
-        """Decode sample features.
-
-            Args:
-              latent: [num, latent_dim] float tensor, representation Z.
-
-            Returns:
-              x_hat: [n_nodes, feat_dim] float tensor, reconstruction x.
-        """
-        x_hat = self._decoder(latent)
-        return x_hat
-
-    # def forward(self, x):
-    #     """Pass through autoencoder.
     #         Args:
     #           x: [num, feat_dim] float tensor.
+
     #         Returns:
-    #           latent: [num, latent_dim] float tensor, representation Z.
-    #           x_hat:  [num, feat_dim] float tensor, reconstruction x.
+    #           latent: [n_nodes, latent_dim] float tensor, representation Z.
     #     """
-    #     latent = self.encoder(x)
-    #     x_hat = self.decoder(latent)
-    #     return x_hat, latent
+    #     x = torch.tensor(x)
+    #     latent = self._encoder(x)
+    #     return latent
+
+    # def decoder(self, latent):
+    #     """Decode sample features.
+
+    #         Args:
+    #           latent: [num, latent_dim] float tensor, representation Z.
+
+    #         Returns:
+    #           x_hat: [n_nodes, feat_dim] float tensor, reconstruction x.
+    #     """
+    #     x_hat = self._decoder(latent)
+    #     return x_hat
+    def encoder(self, x, mask_rate):
+        # Generate a binary mask with the specified mask rate
+        mask = torch.bernoulli(torch.ones_like(x) * (1 - mask_rate))
+
+        # Apply the mask to the input
+        masked_input = x * mask
+
+        # Encode the masked input
+        latent = self._encoder(masked_input)
+
+        return latent
     
-    # mask forward
-    def forward(self, x, is_masked=True):
-        if is_masked:
-            masked_input = x * self.mask
-            encoded = self.encoder(masked_input)
-            decoded = self.decoder(encoded)
-            return decoded
-        else:
-            encoded = self.encoder(x)
-            decoded = self.decoder(encoded)
-            return decoded
+    
+    def decoder(self, latent, mask_rate):
+        # Decode the encoded representation
+        x_hat = self._decoder(latent)
+        x_hat = x_hat * mask_rate
+
+        return x_hat
+
+    def forward(self, x):
+        """Pass through autoencoder.
+            Args:
+              x: [num, feat_dim] float tensor.
+            Returns:
+              latent: [num, latent_dim] float tensor, representation Z.
+              x_hat:  [num, feat_dim] float tensor, reconstruction x.
+        """
+        latent = self.encoder(x)
+        x_hat = self.decoder(latent)
+        return x_hat, latent
+    
+    # # mask forward
+    # def forward(self, x, is_masked=True):
+    #     if is_masked:
+    #         masked_input = x * self.mask
+    #         encoded = self.encoder(masked_input)
+    #         decoded = self.decoder(encoded)
+    #         return decoded
+    #     else:
+    #         encoded = self.encoder(x)
+    #         decoded = self.decoder(encoded)
+    #         return decoded
 
 
 class Prediction(nn.Module):
@@ -264,7 +282,7 @@ class Completer():
         self.img2txt.to(device)
         self.txt2img.to(device)
 
-    def train(self, config, logger, x1_train, x2_train, Y_list, mask, optimizer, device):
+    def train(self, config, logger, x1_train, x2_train, Y_list, mask, optimizer, device, mask_rate=0.5):
         """Training the model.
 
             Args:
@@ -330,12 +348,12 @@ class Completer():
                 
             
                 # masked encoder
-                z_1 = self.autoencoder1.encoder(batch_x1)
-                z_2 = self.autoencoder2.encoder(batch_x2 )
+                z_1 = self.autoencoder1.encoder(batch_x1,mask_rate = mask_rate)
+                z_2 = self.autoencoder2.encoder(batch_x2,mask_rate = mask_rate)
                 
                 # Within-view Reconstruction Loss
-                recon1 = F.mse_loss(self.autoencoder1.decoder(z_1), batch_x1)
-                recon2 = F.mse_loss(self.autoencoder2.decoder(z_2), batch_x2)
+                recon1 = F.mse_loss(self.autoencoder1.decoder(z_1,mask_rate = mask_rate), batch_x1)
+                recon2 = F.mse_loss(self.autoencoder2.decoder(z_2,mask_rate = mask_rate), batch_x2)
                 reconstruction_loss = recon1 + recon2
 
                 # Cross-view Contrastive_Loss
@@ -389,8 +407,8 @@ class Completer():
             img_missing_idx_eval = mask[:, 0] == 0
             txt_missing_idx_eval = mask[:, 1] == 0
 
-            imgs_latent_eval = self.autoencoder1.encoder(x1_train[img_idx_eval])
-            txts_latent_eval = self.autoencoder2.encoder(x2_train[txt_idx_eval])
+            imgs_latent_eval = self.autoencoder1.encoder(x1_train[img_idx_eval],mask_rate = 0 )
+            txts_latent_eval = self.autoencoder2.encoder(x2_train[txt_idx_eval],mask_rate = 0)
 
             # representations
             latent_code_img_eval = torch.zeros(x1_train.shape[0], config['Autoencoder']['arch1'][-1]).to(
@@ -399,8 +417,8 @@ class Completer():
                 device)
 
             if x2_train[img_missing_idx_eval].shape[0] != 0:
-                img_missing_latent_eval = self.autoencoder2.encoder(x2_train[img_missing_idx_eval])
-                txt_missing_latent_eval = self.autoencoder1.encoder(x1_train[txt_missing_idx_eval])
+                img_missing_latent_eval = self.autoencoder2.encoder(x2_train[img_missing_idx_eval],mask_rate = 0)
+                txt_missing_latent_eval = self.autoencoder1.encoder(x1_train[txt_missing_idx_eval],mask_rate = 0)
 
                 txt2img_recon_eval, _ = self.txt2img(img_missing_latent_eval)
                 img2txt_recon_eval, _ = self.img2txt(txt_missing_latent_eval)
