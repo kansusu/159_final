@@ -45,6 +45,7 @@ def cal_std(logger, *arg):
         logger.info(arg)
         output = """ACC {:.2f} std {:.2f}""".format(np.mean(arg) * 100, np.std(arg) * 100)
     logger.info(output)
+    print(output)
 
     return
 
@@ -52,3 +53,18 @@ def normalize(x):
     """Normalize"""
     x = (x - np.min(x)) / (np.max(x) - np.min(x))
     return x
+
+def next_batch_new(X1, X2,both, view1, view2, batch_size):
+    """Return data for next batch"""
+    tot = X1.shape[0]
+    total = math.ceil(tot / batch_size)
+    for i in range(int(total)):
+        start_idx = i * batch_size
+        end_idx = (i + 1) * batch_size
+        end_idx = min(tot, end_idx)
+        batch_x1 = X1[start_idx: end_idx, ...]
+        batch_x2 = X2[start_idx: end_idx, ...]
+        both_ = both[start_idx: end_idx, ...]
+        view1_ = view1[start_idx: end_idx, ...]
+        view2_ = view2[start_idx: end_idx, ...]
+        yield (batch_x1, batch_x2, both_, view1_, view2_, (i + 1))
