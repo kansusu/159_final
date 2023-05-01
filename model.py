@@ -14,15 +14,20 @@
 # }
 # =====================
 
+'''
+Stacked AutoEncoder
+'''
+
 import torch
 import torch.nn as nn
+from torch.autograd import Variable
 import torch.nn.functional as F
 from sklearn.utils import shuffle
 
 from loss import crossview_contrastive_Loss
 import evaluation
 from util import next_batch
-import torch.nn as nn
+
 
 class Autoencoder(nn.Module):
     """AutoEncoder module that projects features to latent space."""
@@ -30,17 +35,8 @@ class Autoencoder(nn.Module):
     def __init__(self,
                  encoder_dim,
                  activation='relu',
-                 batchnorm=True):
-        """Constructor.
-
-        Args:
-          encoder_dim: Should be a list of ints, hidden sizes of
-            encoder network, the last element is the size of the latent representation.
-          activation: Including "sigmoid", "tanh", "relu", "leakyrelu". We recommend to
-            simply choose relu.
-          batchnorm: if provided should be a bool type. It provided whether to use the
-            batchnorm in autoencoders.
-        """
+                 batchnorm=True,
+                 isLastAE=False):
         super(Autoencoder, self).__init__()
 
         self._dim = len(encoder_dim) - 1
@@ -51,7 +47,7 @@ class Autoencoder(nn.Module):
         for i in range(self._dim):
             encoder_layers.append(
                 nn.Linear(encoder_dim[i], encoder_dim[i + 1]))
-            if i < self._dim - 1:
+            if i < self._dim - 1 or (not isLastAE):
                 if self._batchnorm:
                     encoder_layers.append(nn.BatchNorm1d(encoder_dim[i + 1]))
                 if self._activation == 'sigmoid':
@@ -64,7 +60,8 @@ class Autoencoder(nn.Module):
                     encoder_layers.append(nn.ReLU())
                 else:
                     raise ValueError('Unknown activation type %s' % self._activation)
-        encoder_layers.append(nn.Softmax(dim=1))
+                
+        if isLastAE : encoder_layers.append(nn.Softmax(dim=1))
         self._encoder = nn.Sequential(*encoder_layers)
 
         decoder_dim = [i for i in reversed(encoder_dim)]
@@ -84,46 +81,67 @@ class Autoencoder(nn.Module):
                 decoder_layers.append(nn.ReLU())
             else:
                 raise ValueError('Unknown activation type %s' % self._activation)
+        # decoder_layers.append(nn.Softmax(dim = 1))
         self._decoder = nn.Sequential(*decoder_layers)
+        
+        # self.criterion = nn.MSELoss()
+        # self.optimizer = torch.optim.SGD(self.parameters(), lr = 0.1)
 
     def encoder(self, x):
-        """Encode sample features.
-
-            Args:
-              x: [num, feat_dim] float tensor.
-
-            Returns:
-              latent: [n_nodes, latent_dim] float tensor, representation Z.
-        """
-        x = torch.tensor(x)
         latent = self._encoder(x)
         return latent
 
     def decoder(self, latent):
-        """Decode sample features.
-
-            Args:
-              latent: [num, latent_dim] float tensor, representation Z.
-
-            Returns:
-              x_hat: [n_nodes, feat_dim] float tensor, reconstruction x.
-        """
         x_hat = self._decoder(latent)
         return x_hat
 
     def forward(self, x):
-        """Pass through autoencoder.
-
-            Args:
-              x: [num, feat_dim] float tensor.
-
-            Returns:
-              latent: [num, latent_dim] float tensor, representation Z.
-              x_hat:  [num, feat_dim] float tensor, reconstruction x.
-        """
+        # x = x.detach()
         latent = self.encoder(x)
         x_hat = self.decoder(latent)
-        return x_hat, latent
+
+        # self training
+        # loss = self.criterion(x_hat, x)
+        # loss = Variable(loss, requires_grad = True)
+        # self.optimizer.zero_grad()
+        # loss.backward(retain_graph=True)
+        # self.optimizer.step()
+
+        return latent, x_hat
+    
+class SAE(nn.Module):
+    """Stacked AutoEncoder."""
+
+    def __init__(self,
+                 encoder_dim,
+                 activation='relu',
+                 batchnorm=True):
+        super(SAE, self).__init__()
+        self._depth = len(encoder_dim) - 1 # for example, [3, 6, 9, 12] will be three AE, from 0 ~ 2
+        AE = []
+        for i in range(self._depth) :
+            AE.append(Autoencoder([encoder_dim[i], encoder_dim[i + 1]], activation, batchnorm, i == self._depth - 2).cuda())
+        
+        self._AE = AE
+
+    # def encoder(self, x):
+    #     x = torch.tensor(x).cuda()
+    #     for i in range(self._depth) :
+    #         x = self._AE[i].encoder(x)
+    #     return x
+
+    def decoder(self, latent):
+        # latent = torch.tensor(latent).cuda()
+        for i in range(self._depth - 1, -1, -1) :
+            latent = self._AE[i].decoder(latent)
+        return latent
+
+    def forward(self, x):
+        x = torch.as_tensor(x).cuda()
+        for i in range(self._depth) :
+            x, _ = self._AE[i](x)
+        
+        return x
 
 
 class Prediction(nn.Module):
@@ -202,16 +220,7 @@ class Prediction(nn.Module):
         output = self._decoder(latent)
         return output, latent
 
-# add noise
-# def add_noise(inputs,noise_factor=0.3):
-#      inputs = torch.Tensor(inputs)
-#      noisy = inputs+torch.randn_like(inputs) * noise_factor
-#      noisy = torch.clamp(noisy,0.,1.)
-#      return noisy
 
-
-    
-      
 class Completer():
     """COMPLETER module."""
 
@@ -232,9 +241,9 @@ class Completer():
         self._dims_view2 = [self._latent_dim] + self._config['Prediction']['arch2']
 
         # View-specific autoencoders
-        self.autoencoder1 = Autoencoder(config['Autoencoder']['arch1'], config['Autoencoder']['activations1'],
+        self.autoencoder1 = SAE(config['Autoencoder']['arch1'], config['Autoencoder']['activations1'],
                                         config['Autoencoder']['batchnorm'])
-        self.autoencoder2 = Autoencoder(config['Autoencoder']['arch2'], config['Autoencoder']['activations2'],
+        self.autoencoder2 = SAE(config['Autoencoder']['arch2'], config['Autoencoder']['activations2'],
                                         config['Autoencoder']['batchnorm'])
 
         # Dual predictions.
@@ -249,7 +258,7 @@ class Completer():
         self.img2txt.to(device)
         self.txt2img.to(device)
 
-    def train(self, config, logger, x1_train, x2_train, Y_list, mask, optimizer, device, mask_prob=0.5):
+    def train(self, config, logger, x1_train, x2_train, Y_list, mask, optimizer, device):
         """Training the model.
 
             Args:
@@ -281,44 +290,11 @@ class Completer():
             X1, X2 = shuffle(train_view1, train_view2)
             loss_all, loss_rec1, loss_rec2, loss_cl, loss_pre = 0, 0, 0, 0, 0
             for batch_x1, batch_x2, batch_No in next_batch(X1, X2, config['training']['batch_size']):
-                # add noise to batch_x1 
-                # image_noisy1 = add_noise(batch_x1,noise_factor)
-                # image_noisy2 = add_noise(batch_x2,noise_factor)
+                z_1 = self.autoencoder1(batch_x1)
+                z_2 = self.autoencoder2(batch_x2)
                 
-                # original data prob
-                # z_1 = self.autoencoder1.encoder(batch_x1)
-                # z_2 = self.autoencoder2.encoder(batch_x2
-                
-                # image_noisy1 = image_noisy1.to(device)
-                # image_noisy2 = image_noisy2.to(device)
-                
-                # # add noise encoder 
-                # z_1 = self.autoencoder1.encoder(image_noisy1)
-                # z_2 = self.autoencoder2.encoder(image_noisy2)
-                
-                
-                batch_x1 = torch.from_numpy(batch_x1)
-                batch_x2 = torch.from_numpy(batch_x2)
-                
-                # Create mask
-                mask_x1 = torch.bernoulli(torch.full(batch_x1.shape, mask_prob)) 
-                mask_x2 =  torch.bernoulli(torch.full(batch_x2.shape, mask_prob)) 
-                # mask data
-                data_masked1 = batch_x1 * mask_x1
-                data_masked2 = batch_x2 * mask_x2
-                
-                # to-device
-                data_masked1 = data_masked1.to(device)
-                data_masked2 = data_masked2.to(device)
-                
-                batch_x1 = batch_x1.to(device)
-                batch_x2 = batch_x2.to(device)
-                
-                # masked encoder
-              
-                z_1 = self.autoencoder1.encoder(data_masked1)
-                z_2 = self.autoencoder2.encoder(data_masked2)
-                
+                batch_x1 = torch.from_numpy(batch_x1).cuda()
+                batch_x2 = torch.from_numpy(batch_x2).cuda()
                 # Within-view Reconstruction Loss
                 recon1 = F.mse_loss(self.autoencoder1.decoder(z_1), batch_x1)
                 recon2 = F.mse_loss(self.autoencoder2.decoder(z_2), batch_x2)
@@ -334,8 +310,7 @@ class Completer():
                 pre2 = F.mse_loss(txt2img, z_1)
                 dualprediction_loss = (pre1 + pre2)
 
-                # loss = noiserobust_loss + cl_loss + reconstruction_loss * config['training']['lambda2']
-                loss =  cl_loss + reconstruction_loss * config['training']['lambda2']
+                loss = cl_loss + reconstruction_loss * config['training']['lambda2']
 
                 # we train the autoencoder by L_cl and L_rec first to stabilize
                 # the training of the dual prediction
@@ -375,18 +350,32 @@ class Completer():
             img_missing_idx_eval = mask[:, 0] == 0
             txt_missing_idx_eval = mask[:, 1] == 0
 
-            imgs_latent_eval = self.autoencoder1.encoder(x1_train[img_idx_eval])
-            txts_latent_eval = self.autoencoder2.encoder(x2_train[txt_idx_eval])
+            imgs_latent_eval = self.autoencoder1(x1_train[img_idx_eval])
+            txts_latent_eval = self.autoencoder2(x2_train[txt_idx_eval])
+
+            # txt2img_recon_eval, temp = self.txt2img(imgs_latent_eval)
+            # print(txt2img_recon_eval.size())
+            # print(temp.size())
+
+            # print("imgs latent size:", imgs_latent_eval.size())
+            # print("txts latent size:", txts_latent_eval.size())
+            # print("img missing idx:", img_missing_idx_eval.size())
+            # print("txt missing idx:", txt_missing_idx_eval.size())
 
             # representations
             latent_code_img_eval = torch.zeros(x1_train.shape[0], config['Autoencoder']['arch1'][-1]).to(
                 device)
             latent_code_txt_eval = torch.zeros(x2_train.shape[0], config['Autoencoder']['arch2'][-1]).to(
                 device)
+            # print("x1 shape:", x1_train.shape[0])
+            # print("config:", config['Autoencoder']['arch1'][-1])
 
             if x2_train[img_missing_idx_eval].shape[0] != 0:
-                img_missing_latent_eval = self.autoencoder2.encoder(x2_train[img_missing_idx_eval])
-                txt_missing_latent_eval = self.autoencoder1.encoder(x1_train[txt_missing_idx_eval])
+                img_missing_latent_eval = self.autoencoder2(x2_train[img_missing_idx_eval])
+                txt_missing_latent_eval = self.autoencoder1(x1_train[txt_missing_idx_eval])
+
+                # print("img missing:", img_missing_latent_eval.size())
+                # print("txt missing:", txt_missing_latent_eval.size())
 
                 txt2img_recon_eval, _ = self.txt2img(img_missing_latent_eval)
                 img2txt_recon_eval, _ = self.img2txt(txt_missing_latent_eval)
@@ -394,6 +383,7 @@ class Completer():
                 latent_code_img_eval[img_missing_idx_eval] = txt2img_recon_eval
                 latent_code_txt_eval[txt_missing_idx_eval] = img2txt_recon_eval
 
+            # print("latent code:", latent_code_img_eval.size())
             latent_code_img_eval[img_idx_eval] = imgs_latent_eval
             latent_code_txt_eval[txt_idx_eval] = txts_latent_eval
 
